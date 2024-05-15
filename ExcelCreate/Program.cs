@@ -29,9 +29,6 @@ internal class Program
 
             workbookPart.Workbook.Save();
 
-            // Dispose the document.
-            spreadsheetDocument.Dispose();
-
             // Criando Cabeçalhos
             var headers = new[]
             {
