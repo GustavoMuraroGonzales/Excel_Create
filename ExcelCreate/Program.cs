@@ -46,7 +46,6 @@ internal class Program
                     "Valor Total"
                 };
 
-        // Criar linha de cabeçalho
         var headerRow = new Row();
         foreach (var header in headers)
         {
