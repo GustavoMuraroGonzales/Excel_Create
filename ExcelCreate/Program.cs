@@ -44,7 +44,7 @@ internal class Program
         sheets.Append(sheet);
 
         // Adicionar alguns dados à planilha
-        SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();   
+        SheetData? sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
 
         // Criando Cabeçalhos
@@ -72,40 +72,56 @@ internal class Program
             headerRow.AppendChild(new Cell { CellValue = new CellValue(header), DataType = CellValues.String });
         }
 
-        sheetData.AppendChild(headerRow);
+        sheetData?.AppendChild(headerRow);
 
         // Criar dados de exemplo
         var data = new[]
         {
-                    new
+                    new Dados()
                     {
                         Id = Guid.NewGuid(),
-                        Cliente = "John Doe",
                         IdCliente = Guid.NewGuid(),
+                        NomeCliente = "John Doe",
                         Produto = "Product 1",
                         IdProduto = Guid.NewGuid(),
-                        ValorDoProduto = 10.99m,
+                        ValorProduto = 10.99m,
                         Quantidade = 2,
-                        DataDeCompra = DateTime.Now,
+                        DataCompra = DateTime.Now,
                         Ativo = true,
                         ElegivelDevolucao = false,
                         Entregue = true,
                         DataRecebimento = DateTime.Now.AddDays(3),
                     },
-                    new
+                    new Dados()
                     {
-                        Id = Guid.NewGuid(),
-                        Cliente = "Jane Doe",
+                        Id = Guid.NewGuid(),    
                         IdCliente = Guid.NewGuid(),
+                        NomeCliente = "Alinain Pick",
                         Produto = "Product 2",
                         IdProduto = Guid.NewGuid(),
-                        ValorDoProduto = 5.99m,
+                        ValorProduto = 25.33m,
+                        Quantidade = 5,
+                        DataCompra = DateTime.Now,
+                        Ativo = true,
+                        ElegivelDevolucao = false,
+                        Entregue = true,
+                        DataRecebimento = DateTime.Now.AddDays(3),
+                    },
+                    new Dados()
+                    {
+                        Id = Guid.NewGuid(),
+                        IdCliente = Guid.NewGuid(),
+                        NomeCliente = "Maria",
+                        Produto = "Product 3",
+                        IdProduto = Guid.NewGuid(),
+                        ValorProduto = 15.99m,
                         Quantidade = 3,
-                        DataDeCompra = DateTime.Now.AddDays(-1),
-                        Ativo = false,
-                        ElegivelDevolucao = true,
-                        Entregue = false,
-                        DataRecebimento = DateTime.Now.AddDays(5),
+                        DataCompra = DateTime.Now,
+                        Ativo = true,
+                        ElegivelDevolucao = false,
+                        Entregue = true,
+                        DataRecebimento = DateTime.Now.AddDays(3),
+                        
                     }
                 };
 
@@ -114,19 +130,38 @@ internal class Program
         {
             var row = new Row();
             row.AppendChild(new Cell { CellValue = new CellValue(item.Id.ToString()), DataType = CellValues.String });
-            row.AppendChild(new Cell { CellValue = new CellValue(item.Cliente), DataType = CellValues.String });
+            row.AppendChild(new Cell { CellValue = new CellValue(item.NomeCliente), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.IdCliente.ToString()), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.Produto), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.IdProduto.ToString()), DataType = CellValues.String });
-            row.AppendChild(new Cell { CellValue = new CellValue(item.ValorDoProduto.ToString("F2")), DataType = CellValues.Number });
+            row.AppendChild(new Cell { CellValue = new CellValue(item.ValorProduto.ToString("F2")), DataType = CellValues.Number });
             row.AppendChild(new Cell { CellValue = new CellValue(item.Quantidade.ToString()), DataType = CellValues.Number });
-            row.AppendChild(new Cell { CellValue = new CellValue(item.DataDeCompra.ToString("dd.MM.yyyy HH:mm:ss")), DataType = CellValues.String });
+            row.AppendChild(new Cell { CellValue = new CellValue(item.DataCompra.ToString("dd.MM.yyyy HH:mm:ss")), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.Ativo ? "Sim" : "Não"), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.ElegivelDevolucao ? "Sim" : "Não"), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.Entregue ? "Sim" : "Não"), DataType = CellValues.String });
             row.AppendChild(new Cell { CellValue = new CellValue(item.DataRecebimento.ToString("dd.MM.yyyy HH:mm:ss")), DataType = CellValues.String });
-            row.AppendChild(new Cell { CellValue = new CellValue((item.Quantidade * item.ValorDoProduto).ToString("F2")), DataType = CellValues.Number });
-            sheetData.AppendChild(row);
+            row.AppendChild(new Cell { CellValue = new CellValue((item.Quantidade * item.ValorProduto).ToString("F2")), DataType = CellValues.Number });
+            sheetData?.AppendChild(row);
         }
     }
+
+    public class Dados()
+    {
+        public Guid Id { get; set; }    
+        public Guid IdCliente { get; set; }
+        public string? NomeCliente { get; set; }
+        public string? Produto { get; set; }
+        public Guid IdProduto { get; set; }
+        public decimal ValorProduto { get; set; }
+        public int Quantidade { get; set; }
+        public DateTime DataCompra { get; set; }
+        public bool Ativo { get; set; }
+        public bool ElegivelDevolucao { get; set; }
+        public bool Entregue { get; set; }
+        public DateTime DataRecebimento { get; set; }
+        public decimal ValorTotal { get; set; }
+
+    }
 }
+
